@@ -1,0 +1,24 @@
+name: Run Plugin Tests
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Start Docker environment
+        run: docker-compose up -d
+
+      - name: Run tests
+        run: |
+          docker-compose run --rm php-cli bash -c "
+            chmod +x ./bin/install-wp-tests.sh &&
+            echo 'Setting up WP test environment...' &&
+            ./bin/install-wp-tests.sh &&
+            echo 'Running PHPUnit...' &&
+            ./vendor/bin/phpunit
+          "

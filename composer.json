@@ -1,0 +1,17 @@
+{
+    "name": "gosle/ia-agent-content-platform",
+    "description": "Plugin de WordPress para gestionar contenido con agentes de IA.",
+    "type": "wordpress-plugin",
+    "require-dev": {
+        "phpunit/phpunit": "^11.5"
+    },
+    "autoload": {
+        "classmap": [
+            "includes/",
+            "admin/"
+        ]
+    },
+    "scripts": {
+        "test": "phpunit --testsuite Unit --colors=always"
+    }
+}

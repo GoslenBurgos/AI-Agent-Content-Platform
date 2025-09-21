@@ -1,0 +1,20 @@
+# Usamos una imagen oficial de PHP 8.2 para la línea de comandos.
+FROM php:8.2-cli
+
+# Instalamos dependencias del sistema: git, unzip y las necesarias para extensiones de PHP.
+RUN apt-get update && apt-get install -y \
+    git \
+    unzip \
+    libzip-dev \
+    jq \
+    && rm -rf /var/lib/apt/lists/*
+
+# Instalamos las extensiones de PHP que WordPress y PHPUnit necesitan,
+# especialmente 'mysqli' para la conexión a la base de datos.
+RUN docker-php-ext-install mysqli zip
+
+# Instalamos Composer globalmente en el contenedor.
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Establecemos el directorio de trabajo por defecto.
+WORKDIR /app

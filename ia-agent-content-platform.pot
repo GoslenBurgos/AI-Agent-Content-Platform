@@ -1,0 +1,474 @@
+# Copyright (C) 2025 Goslen Burgos
+# This file is distributed under the same license as the IA Agent Content Platform package.
+msgid ""
+msgstr ""
+"Project-Id-Version: IA Agent Content Platform 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/ia-agent-content-platform\n"
+"POT-Creation-Date: 2025-08-25 18:00+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Gemini Code Assist\n"
+"X-Domain: ia-agent-content-platform\n"
+
+#: admin/class-iacp-admin.php:13
+msgid "IA Agent Content Platform"
+msgstr ""
+
+#: admin/class-iacp-admin.php:13
+msgid "IA Agent Platform"
+msgstr ""
+
+#: admin/class-iacp-admin.php:14
+msgid "Dashboard"
+msgstr ""
+
+#: admin/class-iacp-admin.php:15 admin/views/agent-management.php:1
+msgid "Agent Management"
+msgstr ""
+
+#: admin/class-iacp-admin.php:16 admin/views/content-planner.php:1
+msgid "Content Planner"
+msgstr ""
+
+#: admin/class-iacp-admin.php:17 admin/views/social-media-planner.php:1
+msgid "Social Media Planner"
+msgstr ""
+
+#: admin/class-iacp-admin.php:18
+msgid "Log Viewer"
+msgstr ""
+
+#: admin/class-iacp-admin.php:19 admin/views/settings.php:1
+msgid "Settings"
+msgstr ""
+
+#: admin/class-iacp-admin.php:26 admin/class-iacp-admin.php:77
+#: admin/class-iacp-admin.php:90 admin/class-iacp-admin.php:103
+#: admin/class-iacp-admin.php:126 admin/class-iacp-admin.php:143
+#: admin/class-iacp-admin.php:158 admin/class-iacp-admin.php:173
+#: admin/class-iacp-admin.php:188 admin/class-iacp-admin.php:209
+#: admin/class-iacp-admin.php:224 admin/class-iacp-admin.php:265
+#: admin/class-iacp-admin.php:280 admin/class-iacp-admin.php:318
+msgid "You do not have sufficient permissions to access this page."
+msgstr ""
+
+#: admin/class-iacp-admin.php:30
+msgid "Error publishing post to WordPress: %s"
+msgstr ""
+
+#: admin/class-iacp-admin.php:48
+msgid "Logs cleared successfully."
+msgstr ""
+
+#: admin/class-iacp-admin.php:81
+msgid "Failed to create agent in the database."
+msgstr ""
+
+#: admin/class-iacp-admin.php:99
+msgid "Agent with ID %d not found."
+msgstr ""
+
+#: admin/class-iacp-admin.php:118
+msgid "Failed to update agent in the database."
+msgstr ""
+
+#: admin/class-iacp-admin.php:130
+msgid "Failed to delete agent from the database."
+msgstr ""
+
+#: admin/class-iacp-admin.php:152
+msgid "Editorial profile saved successfully."
+msgstr ""
+
+#: admin/class-iacp-admin.php:162 admin/class-iacp-admin.php:200
+msgid "API Error: %s"
+msgstr ""
+
+#: admin/class-iacp-admin.php:182
+msgid "Content with ID %d not found."
+msgstr ""
+
+#: admin/class-iacp-admin.php:192
+msgid "Failed to delete content from the database."
+msgstr ""
+
+#: admin/class-iacp-admin.php:213
+msgid "Please select an article to schedule."
+msgstr ""
+
+#: admin/class-iacp-admin.php:216
+msgid "Please specify a publication date."
+msgstr ""
+
+#: admin/class-iacp-admin.php:219
+msgid "Please select at least one platform."
+msgstr ""
+
+#: admin/class-iacp-admin.php:228
+msgid "The message field is required when social media platforms are selected."
+msgstr ""
+
+#: admin/class-iacp-admin.php:246
+msgid "Database error while scheduling for %s."
+msgstr ""
+
+#: admin/class-iacp-admin.php:270
+msgid "Failed to delete scheduled post from the database."
+msgstr ""
+
+#: admin/class-iacp-admin.php:284
+msgid "Content ID is missing."
+msgstr ""
+
+#: admin/class-iacp-admin.php:298
+#: admin/class-iacp-admin.php:322
+#: admin/class-iacp-admin.php:335
+msgid "You do not have sufficient permissions to perform this action."
+msgstr ""
+
+#: admin/class-iacp-admin.php:326
+msgid "Invalid data provided for rescheduling."
+msgstr ""
+
+#: admin/class-iacp-admin.php:330
+msgid "Failed to update the post date in the database."
+msgstr ""
+
+#: admin/class-iacp-admin.php:333
+msgid "Post rescheduled successfully."
+msgstr ""
+
+#: admin/views/agent-management.php:2
+msgid "Create, customize, and manage your content creation agents."
+msgstr ""
+
+#: admin/views/agent-management.php:6
+msgid "Add New Agent"
+msgstr ""
+
+#: admin/views/agent-management.php:8
+msgid "Name"
+msgstr ""
+
+#: admin/views/agent-management.php:12
+msgid "Role"
+msgstr ""
+
+#: admin/views/agent-management.php:16
+msgid "Experience"
+msgstr ""
+
+#: admin/views/agent-management.php:20
+msgid "Tasks"
+msgstr ""
+
+#: admin/views/agent-management.php:24
+msgid "Prompt"
+msgstr ""
+
+#: admin/views/agent-management.php:28
+msgid "Add New Agent"
+msgstr ""
+
+#: admin/views/agent-management.php:34
+msgid "Existing Agents"
+msgstr ""
+
+#: admin/views/agent-management.php:38
+#: admin/views/agent-management.php:40
+#: admin/views/agent-management.php:42
+msgid "Actions"
+msgstr ""
+
+#: admin/views/agent-management.php:46
+msgid "No agents found."
+msgstr ""
+
+#: admin/views/agent-management.php:54
+msgid "Edit Agent"
+msgstr ""
+
+#: admin/views/agent-management.php:78
+msgid "Save Changes"
+msgstr ""
+
+#: admin/views/agent-management.php:79
+msgid "Cancel"
+msgstr ""
+
+#: admin/views/content-planner.php:2
+msgid "Generate ideas, create articles, and check their virality potential."
+msgstr ""
+
+#: admin/views/content-planner.php:6
+msgid "Idea Generator"
+msgstr ""
+
+#: admin/views/content-planner.php:8
+msgid "Keywords"
+msgstr ""
+
+#: admin/views/content-planner.php:9
+msgid "e.g., artificial intelligence, content creation"
+msgstr ""
+
+#: admin/views/content-planner.php:12
+msgid "Generate Ideas"
+msgstr ""
+
+#: admin/views/content-planner.php:16
+msgid "Content Generator"
+msgstr ""
+
+#: admin/views/content-planner.php:18
+msgid "Select Agent"
+msgstr ""
+
+#: admin/views/content-planner.php:20
+msgid "Loading agents..."
+msgstr ""
+
+#: admin/views/content-planner.php:24
+msgid "Title"
+msgstr ""
+
+#: admin/views/content-planner.php:28
+msgid "Theme"
+msgstr ""
+
+#: admin/views/content-planner.php:33
+msgid "Generate Content"
+msgstr ""
+
+#: admin/views/content-planner.php:39
+msgid "Generated Ideas"
+msgstr ""
+
+#: admin/views/content-planner.php:41
+msgid "Generated ideas will appear here."
+msgstr ""
+
+#: admin/views/content-planner.php:45
+msgid "Generated Content"
+msgstr ""
+
+#: admin/views/content-planner.php:49
+msgid "Virality Score"
+msgstr ""
+
+#: admin/views/content-planner.php:50
+msgid "Views"
+msgstr ""
+
+#: admin/views/content-planner.php:51
+msgid "Status"
+msgstr ""
+
+#: admin/views/content-planner.php:53
+msgid "Delete"
+msgstr ""
+
+#: admin/views/content-planner.php:58
+msgid "No content generated yet."
+msgstr ""
+
+#: admin/views/content-planner.php:90
+msgid "Content Version History"
+msgstr ""
+
+#: admin/views/dashboard.php:1
+msgid "IA Agent Content Platform Dashboard"
+msgstr ""
+
+#: admin/views/dashboard.php:2
+msgid "Welcome to the central hub for your automated content creation."
+msgstr ""
+
+#: admin/views/dashboard.php:7
+msgid "Content Calendar"
+msgstr ""
+
+#: admin/views/dashboard.php:9
+msgid "Here you will see a calendar with scheduled content."
+msgstr ""
+
+#: admin/views/dashboard.php:14
+msgid "Editorial Profile"
+msgstr ""
+
+#: admin/views/dashboard.php:16
+msgid "Define the voice, tone, and style for the AI-generated content."
+msgstr ""
+
+#: admin/views/dashboard.php:18
+msgid "Target Audience"
+msgstr ""
+
+#: admin/views/dashboard.php:22
+msgid "Voice and Tone"
+msgstr ""
+
+#: admin/views/dashboard.php:26
+msgid "Style Guide (e.g., use active voice, avoid jargon)"
+msgstr ""
+
+#: admin/views/dashboard.php:30
+msgid "Banned Words (comma-separated)"
+msgstr ""
+
+#: admin/views/dashboard.php:34
+msgid "Save Profile"
+msgstr ""
+
+#: admin/views/dashboard.php:43
+msgid "Plan your next articles, generate ideas and content."
+msgstr ""
+
+#: admin/views/dashboard.php:44
+msgid "Go to Content Planner"
+msgstr ""
+
+#: admin/views/dashboard.php:48
+msgid "Create, edit, and manage your content creation agents."
+msgstr ""
+
+#: admin/views/dashboard.php:49
+msgid "Go to Agent Management"
+msgstr ""
+
+#: admin/views/dashboard.php:53
+msgid "Schedule your content for social media platforms."
+msgstr ""
+
+#: admin/views/dashboard.php:54
+msgid "Go to Social Media Planner"
+msgstr ""
+
+#: admin/views/log-viewer.php:2
+msgid "This page displays the contents of the plugin's log file for debugging purposes."
+msgstr ""
+
+#: admin/views/log-viewer.php:9
+msgid "The log file is empty or does not exist."
+msgstr ""
+
+#: admin/views/log-viewer.php:16
+msgid "Clear Log"
+msgstr ""
+
+#: admin/views/log-viewer.php:16
+msgid "Are you sure you want to clear the log file? This action cannot be undone."
+msgstr ""
+
+#: admin/views/settings.php:8
+msgid "Gemini API Key"
+msgstr ""
+
+#: admin/views/settings.php:12
+msgid "Gemini Model Name"
+msgstr ""
+
+#: admin/views/settings.php:15
+msgid "e.g., gemini-1.5-flash-latest, gemini-1.5-pro-latest"
+msgstr ""
+
+#: admin/views/social-media-planner.php:2
+msgid "Schedule and manage your content distribution on social media."
+msgstr ""
+
+#: admin/views/social-media-planner.php:6
+msgid "Schedule Post"
+msgstr ""
+
+#: admin/views/social-media-planner.php:8
+msgid "Select Content"
+msgstr ""
+
+#: admin/views/social-media-planner.php:11
+msgid "Select an article"
+msgstr ""
+
+#: admin/views/social-media-planner.php:14
+msgid "Platforms"
+msgstr ""
+
+#: admin/views/social-media-planner.php:16
+msgid "Blog (WordPress Post)"
+msgstr ""
+
+#: admin/views/social-media-planner.php:17
+msgid "Facebook"
+msgstr ""
+
+#: admin/views/social-media-planner.php:18
+msgid "Instagram"
+msgstr ""
+
+#: admin/views/social-media-planner.php:19
+msgid "LinkedIn"
+msgstr ""
+
+#: admin/views/social-media-planner.php:20
+msgid "X (Twitter)"
+msgstr ""
+
+#: admin/views/social-media-planner.php:21
+msgid "YouTube"
+msgstr ""
+
+#: admin/views/social-media-planner.php:22
+msgid "TikTok"
+msgstr ""
+
+#: admin/views/social-media-planner.php:27
+msgid "Message"
+msgstr ""
+
+#: admin/views/social-media-planner.php:30
+msgid "Or generate one with AI..."
+msgstr ""
+
+#: admin/views/social-media-planner.php:33
+msgid "Publish Date"
+msgstr ""
+
+#: admin/views/social-media-planner.php:37
+msgid "Schedule Post"
+msgstr ""
+
+#: admin/views/social-media-planner.php:43
+msgid "Scheduled Posts"
+msgstr ""
+
+#: admin/views/social-media-planner.php:46
+msgid "Article Title"
+msgstr ""
+
+#: admin/views/social-media-planner.php:47
+msgid "Platform"
+msgstr ""
+
+#: admin/views/social-media-planner.php:52
+msgid "No posts scheduled yet."
+msgstr ""
+
+#: includes/class-iacp-content-planner.php:60
+msgid "Please select an agent to generate the content."
+msgstr ""
+
+#: includes/class-iacp-content-planner.php:66
+msgid "The selected agent could not be found."
+msgstr ""
+
+#: includes/class-iacp-content-planner.php:192
+msgid "Content version not found."
+msgstr ""
+
+#: includes/class-iacp-social-media-planner.php:73
+msgid "The selected article could not be found."
+msgstr ""
