@@ -2,11 +2,16 @@
 
 class IACP_Social_Media_Planner {
 
-    public static function schedule_post( $content_id, $platform, $message, $publish_date ) {
-        global $wpdb;
-        $table_name = $wpdb->prefix . 'iacp_social_media';
+    private $db;
 
-        $wpdb->insert(
+    public function __construct(wpdb $db) {
+        $this->db = $db;
+    }
+
+    public function schedule_post( $content_id, $platform, $message, $publish_date ) {
+        $table_name = $this->db->prefix . 'iacp_social_media';
+
+        $this->db->insert(
             $table_name,
             array(
                 'content_id' => $content_id,
@@ -15,29 +20,28 @@ class IACP_Social_Media_Planner {
                 'publish_date' => $publish_date,
             )
         );
-        return $wpdb->insert_id;
+        return $this->db->insert_id;
     }
 
-    public static function get_all_scheduled_posts() {
-        global $wpdb;
-
+    public function get_all_scheduled_posts() {
         // 1. Get scheduled WordPress blog posts (status = 'future')
-        $posts_table = $wpdb->prefix . 'posts';
-        $query_blog_posts = $wpdb->prepare("
-            SELECT 
+        $posts_table = $this->db->prefix . 'posts';
+        $query_blog_posts = $this->db->prepare(
+            "SELECT 
                 ID as id, 
                 'Blog' as platform, 
                 post_excerpt as message, 
                 post_date as publish_date, 
                 post_title as content_title
             FROM {$posts_table}
-            WHERE post_status = %s AND post_type = 'post'
-        ", 'future');
-        $blog_posts = $wpdb->get_results( $query_blog_posts, ARRAY_A );
+            WHERE post_status = %s AND post_type = 'post'", 
+            'future'
+        );
+        $blog_posts = $this->db->get_results( $query_blog_posts, ARRAY_A );
 
         // 2. Get scheduled social media posts from our custom table
-        $table_social = $wpdb->prefix . 'iacp_social_media';
-        $table_content = $wpdb->prefix . 'iacp_content';
+        $table_social = $this->db->prefix . 'iacp_social_media';
+        $table_content = $this->db->prefix . 'iacp_content';
         $query_social_posts = "
             SELECT 
                 sm.id, 
@@ -48,7 +52,7 @@ class IACP_Social_Media_Planner {
             FROM {$table_social} AS sm
             LEFT JOIN {$table_content} AS c ON sm.content_id = c.id
         ";
-        $social_posts = $wpdb->get_results( $query_social_posts, ARRAY_A );
+        $social_posts = $this->db->get_results( $query_social_posts, ARRAY_A );
 
         // 3. Merge the two arrays
         $all_posts = array_merge( $blog_posts, $social_posts );
@@ -62,18 +66,16 @@ class IACP_Social_Media_Planner {
         return $all_posts;
     }
 
-    public static function delete_scheduled_post( $post_id ) {
-        global $wpdb;
-        $table_name = $wpdb->prefix . 'iacp_social_media';
-        return $wpdb->delete( $table_name, array( 'id' => $post_id ), array( '%d' ) );
+    public function delete_scheduled_post( $post_id ) {
+        $table_name = $this->db->prefix . 'iacp_social_media';
+        return $this->db->delete( $table_name, array( 'id' => $post_id ), array( '%d' ) );
     }
 
-    public static function update_scheduled_post_date( $post_id, $new_date ) {
-        global $wpdb;
-        $table_name = $wpdb->prefix . 'iacp_social_media';
+    public function update_scheduled_post_date( $post_id, $new_date ) {
+        $table_name = $this->db->prefix . 'iacp_social_media';
 
         // The new_date should be in 'YYYY-MM-DD HH:mm:ss' format
-        return $wpdb->update(
+        return $this->db->update(
             $table_name,
             array( 'publish_date' => $new_date ),
             array( 'id' => $post_id ),
@@ -82,7 +84,7 @@ class IACP_Social_Media_Planner {
         );
     }
 
-    public static function generate_social_post_suggestion( $content_id, callable $content_retriever = null, callable $text_generator = null ) {
+    public function generate_social_post_suggestion( $content_id, callable $content_retriever = null, callable $text_generator = null ) {
         if ($content_retriever === null) {
             $content_retriever = ['IACP_Content_Planner', 'get_content'];
         }
@@ -96,10 +98,10 @@ class IACP_Social_Media_Planner {
         $content_summary = wp_trim_words( $content_data->content, 400, '...' );
 
         $prompt = "Actúa como un Community Manager experto. Basado en el siguiente artículo, crea un post corto y atractivo para redes sociales. El post debe captar la atención, resumir la idea principal y animar a los usuarios a hacer clic en el enlace del artículo. Incluye 3-5 hashtags relevantes. No incluyas el enlace, solo el texto del post.\n\n";
-        $prompt .= "--- INICIO DEL ARTÍCULO ---\n";
+        $prompt .= "---" . " INICIO DEL ARTÍCULO ---" . "\n";
         $prompt .= "Título: " . $content_data->title . "\n\n";
         $prompt .= "Resumen: " . $content_summary . "\n";
-        $prompt .= "--- FIN DEL ARTÍCULO ---\n\n";
+        $prompt .= "---" . " FIN DEL ARTÍCULO ---" . "\n\n";
         $prompt .= "Genera solo el texto para el post de redes sociales.";
 
         if ($text_generator === null) {

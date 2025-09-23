@@ -47,12 +47,22 @@ register_deactivation_hook( __FILE__, 'deactivate_ia_agent_content_platform' );
 require_once IACP_PLUGIN_DIR . 'includes/class-ia-agent-content-platform.php';
 require_once IACP_PLUGIN_DIR . 'admin/class-iacp-admin.php';
 require_once IACP_PLUGIN_DIR . 'includes/class-iacp-job-worker.php';
+require_once IACP_PLUGIN_DIR . 'includes/class-iacp-agents.php';
+require_once IACP_PLUGIN_DIR . 'includes/class-iacp-content-planner.php';
+require_once IACP_PLUGIN_DIR . 'includes/class-iacp-social-media-planner.php';
 
 /**
  * Begins execution of the plugin.
  */
 function run_ia_agent_content_platform() {
-    $admin = new IACP_Admin('ia-agent-content-platform', '1.0.0');
+    global $wpdb;
+
+    // Instantiate logic classes
+    $agents_manager = new IACP_Agents($wpdb);
+    $content_planner = new IACP_Content_Planner($wpdb);
+    $social_media_planner = new IACP_Social_Media_Planner($wpdb);
+
+    $admin = new IACP_Admin('ia-agent-content-platform', '1.0.0', $agents_manager, $content_planner, $social_media_planner);
     $plugin = new IA_Agent_Content_Platform($admin);
     $plugin->run();
 

@@ -4,10 +4,16 @@ class IACP_Admin {
 
     private $plugin_name;
     private $version;
+    private $agents_manager;
+    private $content_planner;
+    private $social_media_planner;
 
-    public function __construct( $plugin_name, $version ) {
+    public function __construct( $plugin_name, $version, IACP_Agents $agents_manager, IACP_Content_Planner $content_planner, IACP_Social_Media_Planner $social_media_planner ) {
         $this->plugin_name = $plugin_name;
         $this->version = $version;
+        $this->agents_manager = $agents_manager;
+        $this->content_planner = $content_planner;
+        $this->social_media_planner = $social_media_planner;
     }
 
     public function add_admin_menu() {
@@ -25,7 +31,7 @@ class IACP_Admin {
     public function ajax_publish_wordpress_post() {
         $this->_check_ajax_permissions();
         $content_id = intval( $_POST['content_id'] );
-        $post_id = IACP_Content_Planner::publish_content_as_post( $content_id );
+        $post_id = $this->content_planner->publish_content_as_post( $content_id );
         if ( is_wp_error( $post_id ) ) {
             wp_send_json_error( array( 'message' => sprintf( __( 'Error publishing post to WordPress: %s', 'ia-agent-content-platform' ), $post_id->get_error_message() ) ) );
         } else {
@@ -93,7 +99,7 @@ class IACP_Admin {
 
     public function ajax_create_agent() {
         $this->_check_ajax_permissions();
-        $agent_id = IACP_Agents::create_agent( sanitize_text_field( $_POST['name'] ), sanitize_textarea_field( $_POST['role'] ), sanitize_textarea_field( $_POST['experience'] ), sanitize_textarea_field( $_POST['tasks'] ), sanitize_textarea_field( $_POST['prompt'] ) );
+        $agent_id = $this->agents_manager->create_agent( sanitize_text_field( $_POST['name'] ), sanitize_textarea_field( $_POST['role'] ), sanitize_textarea_field( $_POST['experience'] ), sanitize_textarea_field( $_POST['tasks'] ), sanitize_textarea_field( $_POST['prompt'] ) );
         if ( ! $agent_id ) {
             wp_send_json_error( array( 'message' => __( 'Failed to create agent in the database.', 'ia-agent-content-platform' ) ) );
         }
@@ -102,13 +108,13 @@ class IACP_Admin {
 
     public function ajax_get_agents() {
         $this->_check_ajax_permissions();
-        wp_send_json_success( IACP_Agents::get_all_agents() );
+        wp_send_json_success( $this->agents_manager->get_all_agents() );
     }
 
     public function ajax_get_agent() {
         $this->_check_ajax_permissions();
         $agent_id = intval( $_POST['agent_id'] );
-        $agent = IACP_Agents::get_agent( $agent_id );
+        $agent = $this->agents_manager->get_agent( $agent_id );
         if ( $agent ) {
             wp_send_json_success( $agent );
         } else {
@@ -125,7 +131,7 @@ class IACP_Admin {
         $tasks = sanitize_textarea_field( $_POST['tasks'] );
         $prompt = sanitize_textarea_field( $_POST['prompt'] );
 
-        $result = IACP_Agents::update_agent( $agent_id, $name, $role, $experience, $tasks, $prompt );
+        $result = $this->agents_manager->update_agent( $agent_id, $name, $role, $experience, $tasks, $prompt );
         if ( false === $result ) {
             wp_send_json_error( array( 'message' => __( 'Failed to update agent in the database.', 'ia-agent-content-platform' ) ) );
         }
@@ -134,7 +140,7 @@ class IACP_Admin {
 
     public function ajax_delete_agent() {
         $this->_check_ajax_permissions();
-        $result = IACP_Agents::delete_agent( intval( $_POST['agent_id'] ) );
+        $result = $this->agents_manager->delete_agent( intval( $_POST['agent_id'] ) );
         if ( false === $result ) {
             wp_send_json_error( array( 'message' => __( 'Failed to delete agent from the database.', 'ia-agent-content-platform' ) ) );
         }
@@ -164,7 +170,7 @@ class IACP_Admin {
     public function ajax_generate_ideas() {
         $this->_check_ajax_permissions();
         $keywords = sanitize_text_field( $_POST['keywords'] );
-        $ideas = IACP_Content_Planner::generate_ideas( $keywords );
+        $ideas = $this->content_planner->generate_ideas( $keywords );
         if ( is_wp_error( $ideas ) ) {
             wp_send_json_error( array( 'message' => sprintf( __( 'API Error: %s', 'ia-agent-content-platform' ), $ideas->get_error_message() ), 'code' => $ideas->get_error_code() ) );
         } else {
@@ -209,13 +215,13 @@ class IACP_Admin {
 
     public function ajax_get_content() {
         $this->_check_ajax_permissions();
-        wp_send_json_success( IACP_Content_Planner::get_all_content() );
+        wp_send_json_success( $this->content_planner->get_all_content() );
     }
 
     public function ajax_get_single_content() {
         $this->_check_ajax_permissions();
         $content_id = intval( $_POST['content_id'] );
-        $content = IACP_Content_Planner::get_content( $content_id );
+        $content = $this->content_planner->get_content( $content_id );
         if ( $content ) {
             wp_send_json_success( $content );
         } else {
@@ -226,7 +232,7 @@ class IACP_Admin {
     public function ajax_delete_content() {
         $this->_check_ajax_permissions();
         $content_id = intval( $_POST['content_id'] );
-        $result = IACP_Content_Planner::delete_content( $content_id );
+        $result = $this->content_planner->delete_content( $content_id );
         if ( false === $result ) {
             wp_send_json_error( array( 'message' => __( 'Failed to delete content from the database.', 'ia-agent-content-platform' ) ) );
         }
@@ -263,7 +269,7 @@ class IACP_Admin {
 
         foreach ( $platforms as $platform ) {
             if ( $platform === 'blog' ) {
-                $post_id = IACP_Content_Planner::publish_content_as_post( $content_id, $publish_date );
+                $post_id = $this->content_planner->publish_content_as_post( $content_id, $publish_date );
                 if ( is_wp_error( $post_id ) ) {
                     $results['blog'] = array( 'success' => false, 'message' => $post_id->get_error_message() );
                 } else {
@@ -271,7 +277,7 @@ class IACP_Admin {
                 }
             } else {
                 // For other platforms, save to iacp_social_media table
-                $social_post_id = IACP_Social_Media_Planner::schedule_post( $content_id, $platform, $message, $publish_date );
+                $social_post_id = $this->social_media_planner->schedule_post( $content_id, $platform, $message, $publish_date );
                 if ( $social_post_id ) {
                     $results[$platform] = array( 'success' => true, 'id' => $social_post_id );
                 } else {
@@ -284,12 +290,12 @@ class IACP_Admin {
 
     public function ajax_get_scheduled_posts() {
         $this->_check_ajax_permissions();
-        wp_send_json_success( IACP_Social_Media_Planner::get_all_scheduled_posts() );
+        wp_send_json_success( $this->social_media_planner->get_all_scheduled_posts() );
     }
 
     public function ajax_delete_scheduled_post() {
         $this->_check_ajax_permissions();
-        $result = IACP_Social_Media_Planner::delete_scheduled_post( intval( $_POST['post_id'] ) );
+        $result = $this->social_media_planner->delete_scheduled_post( intval( $_POST['post_id'] ) );
         if ( false === $result ) {
             wp_send_json_error( array( 'message' => __( 'Failed to delete scheduled post from the database.', 'ia-agent-content-platform' ) ) );
         }
@@ -304,7 +310,7 @@ class IACP_Admin {
             wp_send_json_error( array( 'message' => __( 'Content ID is missing.', 'ia-agent-content-platform' ) ) );
         }
 
-        $suggestion = IACP_Social_Media_Planner::generate_social_post_suggestion( $content_id );
+        $suggestion = $this->social_media_planner->generate_social_post_suggestion( $content_id );
 
         if ( is_wp_error( $suggestion ) ) {
             wp_send_json_error( array( 'message' => $suggestion->get_error_message() ) );
@@ -323,7 +329,7 @@ class IACP_Admin {
             wp_send_json_error( array( 'message' => __( 'Invalid data provided for rescheduling.', 'ia-agent-content-platform' ) ) );
         }
 
-        $result = IACP_Social_Media_Planner::update_scheduled_post_date( $post_id, $new_date );
+        $result = $this->social_media_planner->update_scheduled_post_date( $post_id, $new_date );
 
         if ( false === $result ) {
             wp_send_json_error( array( 'message' => __( 'Failed to update the post date in the database.', 'ia-agent-content-platform' ) ) );
@@ -335,14 +341,14 @@ class IACP_Admin {
     public function ajax_get_content_versions() {
         $this->_check_ajax_permissions( __( 'You do not have sufficient permissions to perform this action.', 'ia-agent-content-platform' ) );
         $content_id = intval( $_POST['content_id'] );
-        $versions = IACP_Content_Planner::get_content_versions( $content_id );
+        $versions = $this->content_planner->get_content_versions( $content_id );
         wp_send_json_success( $versions );
     }
 
     public function ajax_restore_content_version() {
         $this->_check_ajax_permissions( __( 'You do not have sufficient permissions to perform this action.', 'ia-agent-content-platform' ) );
         $version_id = intval( $_POST['version_id'] );
-        $result = IACP_Content_Planner::restore_content_version( $version_id );
+        $result = $this->content_planner->restore_content_version( $version_id );
         if ( is_wp_error( $result ) ) {
             wp_send_json_error( array( 'message' => $result->get_error_message() ) );
         }

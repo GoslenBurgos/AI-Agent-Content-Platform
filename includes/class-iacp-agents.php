@@ -2,11 +2,16 @@
 
 class IACP_Agents {
 
-    public static function create_agent( $name, $role, $experience, $tasks, $prompt ) {
-        global $wpdb;
-        $table_name = $wpdb->prefix . 'iacp_agents';
+    private $db;
 
-        $wpdb->insert(
+    public function __construct(wpdb $db) {
+        $this->db = $db;
+    }
+
+    public function create_agent( $name, $role, $experience, $tasks, $prompt ) {
+        $table_name = $this->db->prefix . 'iacp_agents';
+
+        $this->db->insert(
             $table_name,
             array(
                 'name' => $name,
@@ -16,28 +21,25 @@ class IACP_Agents {
                 'prompt' => $prompt,
             )
         );
-        return $wpdb->insert_id;
+        return $this->db->insert_id;
     }
 
-    public static function get_agent( $agent_id ) {
-        global $wpdb;
-        $table_name = $wpdb->prefix . 'iacp_agents';
+    public function get_agent( $agent_id ) {
+        $table_name = $this->db->prefix . 'iacp_agents';
 
-        return $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $table_name WHERE id = %d", $agent_id ) );
+        return $this->db->get_row( $this->db->prepare( "SELECT * FROM $table_name WHERE id = %d", $agent_id ) );
     }
 
-    public static function get_all_agents() {
-        global $wpdb;
-        $table_name = $wpdb->prefix . 'iacp_agents';
+    public function get_all_agents() {
+        $table_name = $this->db->prefix . 'iacp_agents';
 
-        return $wpdb->get_results( "SELECT * FROM $table_name" );
+        return $this->db->get_results( "SELECT * FROM $table_name" );
     }
 
-    public static function update_agent( $agent_id, $name, $role, $experience, $tasks, $prompt ) {
-        global $wpdb;
-        $table_name = $wpdb->prefix . 'iacp_agents';
+    public function update_agent( $agent_id, $name, $role, $experience, $tasks, $prompt ) {
+        $table_name = $this->db->prefix . 'iacp_agents';
 
-        $wpdb->update(
+        $this->db->update(
             $table_name,
             array(
                 'name' => $name,
@@ -52,10 +54,9 @@ class IACP_Agents {
         );
     }
 
-    public static function delete_agent( $agent_id ) {
-        global $wpdb;
-        $table_name = $wpdb->prefix . 'iacp_agents';
+    public function delete_agent( $agent_id ) {
+        $table_name = $this->db->prefix . 'iacp_agents';
 
-        return $wpdb->delete( $table_name, array( 'id' => $agent_id ), array( '%d' ) );
+        return $this->db->delete( $table_name, array( 'id' => $agent_id ), array( '%d' ) );
     }
 }
