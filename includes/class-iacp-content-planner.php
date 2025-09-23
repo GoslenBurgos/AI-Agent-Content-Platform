@@ -46,6 +46,10 @@ class IACP_Content_Planner {
             return new WP_Error( 'agent_not_selected', 'Please select an agent to generate the content.' );
         }
 
+        // Sanitize inputs
+        $title = sanitize_text_field( $title );
+        $theme = wp_kses_post( $theme );
+
         if ($agent_retriever === null) {
             $agent_retriever = ['IACP_Agents', 'get_agent'];
         }
@@ -333,8 +337,14 @@ class IACP_Content_Planner {
     }
 
     private static function clean_json_response( $response_string ) {
-        $cleaned_string = trim( str_replace( [ '```json', '```' ], '', $response_string ) );
-        return json_decode( $cleaned_string, true );
+        // Find the first occurrence of a JSON object or array
+        $pattern = '/(\[.*\]|\{.*\})/s';
+        if (preg_match($pattern, $response_string, $matches)) {
+            // Return the first matched JSON block
+            return json_decode($matches[0], true);
+        }
+        // If no JSON is found, return null
+        return null;
     }
 
     private static function get_editorial_profile_prompt() {

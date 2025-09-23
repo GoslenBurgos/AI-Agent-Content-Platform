@@ -18,4 +18,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Verified the implementation of all features in TASK-201, ensuring they meet the requirements.
 
-For more technical details, see [Technical Log for TASK-201](./technical_log/TASK-201.md).
+### Security
+- Added permission checks to all AJAX endpoints.
+- Implemented input sanitization for content generation workflows.
+- Improved JSON parsing from API responses to be more robust.
+
+For more technical details, see [Technical Log for TASK-201](./technical_log/TASK-201.md) and [Technical Log for TASK-202](./technical_log/TASK-202.md).
