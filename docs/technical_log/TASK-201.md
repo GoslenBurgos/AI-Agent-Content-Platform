@@ -40,3 +40,13 @@ Esta tarea se centró en dos objetivos principales: mejorar la seguridad del alm
     *   Si se producen 3 fallos de API en un período de 5 minutos, el circuito se "abre" y la aplicación deja de realizar llamadas a la API durante los siguientes 5 minutos.
     *   Durante este período, cualquier intento de llamar a `generate_text()` devolverá un error inmediato, informando al usuario que el servicio está temporalmente no disponible.
     *   Una llamada exitosa a la API reinicia el contador de fallos, "cerrando" el circuito.
+
+**Fecha:** 2025-09-22
+
+## Verificación de la Implementación
+
+Se ha verificado la implementación de todos los checkpoints de la `TASK-201`. El código cumple con todos los requisitos definidos en el "Plan de Ataque".
+
+-   **Almacenamiento Seguro:** La clave de API se encripta y desencripta correctamente.
+-   **Cliente Robusto:** El cliente de API reintenta las llamadas fallidas con un backoff exponencial.
+-   **Circuit Breaker:** El patrón de circuit breaker está implementado y funciona como se esperaba, previniendo llamadas a la API después de fallos repetidos.

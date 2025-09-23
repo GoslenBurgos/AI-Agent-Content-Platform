@@ -1,0 +1,14 @@
+{
+    "name": "ia-agent-content-platform",
+    "version": "1.0.0",
+    "description": "A WordPress plugin for generating content using AI.",
+    "main": "ia-agent-content-platform.php",
+    "scripts": {
+        "test": "playwright test"
+    },
+    "devDependencies": {
+        "@playwright/test": "^1.42.1"
+    },
+    "author": "",
+    "license": "GPL-2.0-or-later"
+}
