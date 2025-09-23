@@ -58,6 +58,7 @@ class IA_Agent_Content_Platform {
         add_action( 'wp_ajax_iacp_publish_wordpress_post', array( $this->admin, 'ajax_publish_wordpress_post' ) );
         add_action( 'wp_ajax_iacp_get_content_versions', array( $this->admin, 'ajax_get_content_versions' ) );
         add_action( 'wp_ajax_iacp_restore_content_version', array( $this->admin, 'ajax_restore_content_version' ) );
+        add_action( 'wp_ajax_iacp_get_job_status', array( $this->admin, 'ajax_get_job_status' ) );
     }
 
     private function define_public_hooks() {

@@ -35,7 +35,7 @@ function activate_ia_agent_content_platform() {
  * The code that runs during plugin deactivation.
  */
 function deactivate_ia_agent_content_platform() {
-    // Deactivation logic here.
+    wp_clear_scheduled_hook('iacp_process_job_queue');
 }
 
 register_activation_hook( __FILE__, 'activate_ia_agent_content_platform' );
@@ -46,6 +46,7 @@ register_deactivation_hook( __FILE__, 'deactivate_ia_agent_content_platform' );
  */
 require_once IACP_PLUGIN_DIR . 'includes/class-ia-agent-content-platform.php';
 require_once IACP_PLUGIN_DIR . 'admin/class-iacp-admin.php';
+require_once IACP_PLUGIN_DIR . 'includes/class-iacp-job-worker.php';
 
 /**
  * Begins execution of the plugin.
@@ -54,5 +55,10 @@ function run_ia_agent_content_platform() {
     $admin = new IACP_Admin('ia-agent-content-platform', '1.0.0');
     $plugin = new IA_Agent_Content_Platform($admin);
     $plugin->run();
+
+    if ( ! wp_next_scheduled( 'iacp_process_job_queue' ) ) {
+        wp_schedule_event( time(), 'minutely', 'iacp_process_job_queue' );
+    }
+    add_action( 'iacp_process_job_queue', array( 'IACP_Job_Worker', 'process_queue' ) );
 }
 run_ia_agent_content_platform();

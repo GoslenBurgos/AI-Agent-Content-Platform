@@ -174,23 +174,37 @@ class IACP_Admin {
 
     public function ajax_generate_content() {
         $this->_check_ajax_permissions();
-        $draft_agent_id = isset( $_POST['draft_agent_id'] ) ? intval( $_POST['draft_agent_id'] ) : 0;
-        $seo_agent_id = isset( $_POST['seo_agent_id'] ) ? intval( $_POST['seo_agent_id'] ) : 0;
-        $copy_agent_id = isset( $_POST['copy_agent_id'] ) ? intval( $_POST['copy_agent_id'] ) : 0;
-        $image_agent_id = isset( $_POST['image_agent_id'] ) ? intval( $_POST['image_agent_id'] ) : 0;
-        $title_agent_id = isset( $_POST['title_agent_id'] ) ? intval( $_POST['title_agent_id'] ) : 0;
 
-        $title = sanitize_text_field( $_POST['title'] );
-        $theme = sanitize_textarea_field( $_POST['theme'] );
-        $virality_score = intval( $_POST['virality_score'] );
-        $status = sanitize_text_field( $_POST['content_status'] );
+        $payload = array(
+            'title' => sanitize_text_field($_POST['title']),
+            'theme' => sanitize_textarea_field($_POST['theme']),
+            'draft_agent_id' => isset($_POST['draft_agent_id']) ? intval($_POST['draft_agent_id']) : 0,
+            'seo_agent_id' => isset($_POST['seo_agent_id']) ? intval($_POST['seo_agent_id']) : 0,
+            'copy_agent_id' => isset($_POST['copy_agent_id']) ? intval($_POST['copy_agent_id']) : 0,
+            'image_agent_id' => isset($_POST['image_agent_id']) ? intval($_POST['image_agent_id']) : 0,
+            'title_agent_id' => isset($_POST['title_agent_id']) ? intval($_POST['title_agent_id']) : 0,
+            'virality_score' => intval($_POST['virality_score']),
+            'status' => sanitize_text_field($_POST['content_status']),
+        );
 
-        $content = IACP_Content_Planner::execute_content_workflow( $title, $theme, $draft_agent_id, $seo_agent_id, $copy_agent_id, $image_agent_id, $title_agent_id );
-        if ( is_wp_error( $content ) ) {
-            wp_send_json_error( array( 'message' => sprintf( __( 'API Error: %s', 'ia-agent-content-platform' ), $content->get_error_message() ), 'code' => $content->get_error_code() ) );
-        }
-        $content_id = IACP_Content_Planner::save_content( $title, $theme, $content, $virality_score, $status, $draft_agent_id );
-        wp_send_json_success( array( 'content_id' => $content_id ) );
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'iacp_jobs';
+
+        $wpdb->insert(
+            $table_name,
+            array(
+                'content_id' => 0, // This will be updated when the job is processed
+                'status' => 'pending',
+                'payload' => json_encode($payload),
+                'logs' => '',
+                'created_at' => current_time('mysql'),
+                'processed_at' => '0000-00-00 00:00:00',
+            )
+        );
+
+        $job_id = $wpdb->insert_id;
+
+        wp_send_json_success(array('job_id' => $job_id));
     }
 
     public function ajax_get_content() {
@@ -333,6 +347,25 @@ class IACP_Admin {
             wp_send_json_error( array( 'message' => $result->get_error_message() ) );
         }
         wp_send_json_success( array( 'message' => 'Content restored successfully.' ) );
+    }
+
+    public function ajax_get_job_status() {
+        $this->_check_ajax_permissions();
+        $job_id = intval($_POST['job_id']);
+
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'iacp_jobs';
+        $job = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE id = %d", $job_id));
+
+        if (!$job) {
+            wp_send_json_error(array('message' => 'Job not found.'));
+        }
+
+        wp_send_json_success(array(
+            'status' => $job->status,
+            'logs' => $job->logs,
+            'content_id' => $job->content_id,
+        ));
     }
 
     /**

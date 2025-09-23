@@ -49,7 +49,7 @@ class IACP_Db {
             PRIMARY KEY  (id)
         ) $charset_collate;";
 
-        $table_name_versions = $wpdb->prefix . 'iacp_content_versions';
+                $table_name_versions = $wpdb->prefix . 'iacp_content_versions';
         $sql_versions = "CREATE TABLE $table_name_versions (
             id mediumint(9) NOT NULL AUTO_INCREMENT,
             content_id mediumint(9) NOT NULL,

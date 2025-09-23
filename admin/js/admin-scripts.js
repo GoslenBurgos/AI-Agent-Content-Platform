@@ -310,9 +310,34 @@
 
             $.post(iacp_ajax.ajax_url, formData, function(response) {
                 if (response.success) {
-                    showNotice('Content generated and saved as a draft!', 'success');
+                    var job_id = response.data.job_id;
+                    showNotice('Content generation started!', 'success');
                     $('#content-generator-form')[0].reset();
-                    loadContent();
+                    
+                    // Add a placeholder row to the table
+                    var newRow = '<tr id="job-' + job_id + '"><td>' + escapeHtml(formData.title) + '</td><td colspan="5">Processing...</td></tr>';
+                    $('#the-content-list').prepend(newRow);
+
+                    var poller = setInterval(function() {
+                        var data = {
+                            action: 'iacp_get_job_status',
+                            nonce: iacp_ajax.nonce,
+                            job_id: job_id
+                        };
+
+                        $.post(iacp_ajax.ajax_url, data, function(response) {
+                            if (response.success) {
+                                if (response.data.status === 'completed' || response.data.status === 'failed') {
+                                    clearInterval(poller);
+                                    loadContent(); // Refresh the whole table
+                                }
+                            } else {
+                                clearInterval(poller);
+                                showNotice('Error checking job status: ' + response.data.message, 'error');
+                            }
+                        });
+                    }, 5000);
+
                 } else {
                     var errorMessage = response.data && response.data.message ? response.data.message : 'An unknown error occurred.';
                     showNotice('Error generating content: ' + errorMessage, 'error');
