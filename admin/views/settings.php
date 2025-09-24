@@ -18,6 +18,18 @@
                 </td>
             </tr>
         </table>
+
+        <h2><?php esc_html_e( 'Cache Management', 'ia-agent-content-platform' ); ?></h2>
+        <table class="form-table">
+            <tr valign="top">
+                <th scope="row"><?php esc_html_e( 'API Cache', 'ia-agent-content-platform' ); ?></th>
+                <td>
+                    <button type="button" id="iacp-clear-api-cache" class="button"><?php esc_html_e( 'Clear API Cache', 'ia-agent-content-platform' ); ?></button>
+                    <p class="description"><?php esc_html_e( 'This will clear all cached API responses.', 'ia-agent-content-platform' ); ?></p>
+                </td>
+            </tr>
+        </table>
+
         <?php submit_button(); ?>
     </form>
 </div>

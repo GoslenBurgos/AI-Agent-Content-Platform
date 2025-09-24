@@ -24,7 +24,7 @@ Plan de Ataque: docs/tasks/TASK-203.md
 Épica 3: Modernización de Arquitectura (Prioridad: Alta)
 TASK-204: Refactorizar a Inyección de Dependencias y Patrón Repositorio
 
-Estado: Pendiente
+Estado: Culminada
 
 Plan de Ataque: docs/tasks/TASK-204.md
 

@@ -29,4 +29,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Implemented input sanitization for content generation workflows.
 - Improved JSON parsing from API responses to be more robust.
 
-For more technical details, see [Technical Log for TASK-201](./technical_log/TASK-201.md), [Technical Log for TASK-202](./technical_log/TASK-202.md), [Technical Log for TASK-203](./technical_log/TASK-203.md), and [Technical Log for TASK-204](./technical_log/TASK-204.md).
+For more technical details, see [Technical Log for TASK-201](./technical_log/TASK-201.md), [Technical Log for TASK-202](./technical_log/TASK-202.md), [Technical Log for TASK-203](./technical_log/TASK-203.md), [Technical Log for TASK-204](./technical_log/TASK-204.md), and [Technical Log for TASK-205](./technical_log/TASK-205.md).

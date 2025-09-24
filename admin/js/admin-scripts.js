@@ -178,7 +178,7 @@
                 name: $('#edit-agent-name').val(),
                 role: $('#edit-agent-role').val(),
                 experience: $('#edit-agent-experience').val(),
-                tasks: $('#edit-agent-tasks').val(),
+                tasks: $('#agent-tasks').val(),
                 prompt: $('#edit-agent-prompt').val()
             };
 
@@ -842,3 +842,24 @@
              .replace(/'/g, "&#039;");
      }
 })( jQuery );
+
+        // Handle clear API cache button
+        $('#iacp-clear-api-cache').on('click', function(e) {
+            e.preventDefault();
+
+            showConfirmationModal('Are you sure you want to clear the API cache?', function() {
+                var data = {
+                    action: 'iacp_clear_api_cache',
+                    nonce: iacp_ajax.nonce
+                };
+
+                $.post(iacp_ajax.ajax_url, data, function(response) {
+                    if (response.success) {
+                        showNotice('API cache cleared successfully.', 'success');
+                    } else {
+                        var errorMessage = response.data && response.data.message ? response.data.message : 'An unknown error occurred.';
+                        showNotice('Error clearing API cache: ' + escapeHtml(errorMessage), 'error');
+                    }
+                });
+            });
+        });

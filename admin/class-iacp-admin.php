@@ -26,6 +26,20 @@ class IACP_Admin {
         add_submenu_page( $this->plugin_name, __( 'Settings', 'ia-agent-content-platform' ), __( 'Settings', 'ia-agent-content-platform' ), 'manage_options', $this->plugin_name . '-settings', array( $this, 'display_settings_page' ) );
     }
 
+    public function ajax_clear_api_cache() {
+        $this->_check_ajax_permissions();
+        require_once IACP_PLUGIN_DIR . 'includes/class-iacp-api-cache.php';
+        IACP_Api_Cache::clear_cache();
+        wp_send_json_success();
+    }
+
+    public function ajax_clear_api_cache() {
+        $this->_check_ajax_permissions();
+        require_once IACP_PLUGIN_DIR . 'includes/class-iacp-api-cache.php';
+        IACP_Api_Cache::clear_cache();
+        wp_send_json_success();
+    }
+
     public function display_dashboard_page() { require_once IACP_PLUGIN_DIR . 'admin/views/dashboard.php'; }
     public function display_agent_management_page() { require_once IACP_PLUGIN_DIR . 'admin/views/agent-management.php'; }
     public function ajax_publish_wordpress_post() {

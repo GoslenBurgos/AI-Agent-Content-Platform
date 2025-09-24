@@ -26,8 +26,8 @@ class IACP_Db {
             virality_score tinyint(2) DEFAULT 0,
             status tinytext NOT NULL,
             views INT(11) NOT NULL DEFAULT 0,
-            post_id bigint(20) UNSIGNED DEFAULT 0 NOT NULL,
             KEY post_id (post_id), /* Index for faster view tracking lookups */
+            KEY status (status(10)),
             PRIMARY KEY  (id)
         ) $charset_collate;";
 
@@ -46,6 +46,7 @@ class IACP_Db {
             platform tinytext NOT NULL,
             message text NOT NULL,
             publish_date datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
+            KEY publish_date (publish_date),
             PRIMARY KEY  (id)
         ) $charset_collate;";
 
@@ -67,6 +68,15 @@ class IACP_Db {
         dbDelta( $sql_schedule );
         dbDelta( $sql_social_media );
         dbDelta( $sql_versions );
+
+        $table_name_api_cache = $wpdb->prefix . 'iacp_api_cache';
+        $sql_api_cache = "CREATE TABLE $table_name_api_cache (
+            prompt_hash VARCHAR(64) NOT NULL,
+            response LONGTEXT NOT NULL,
+            created_at DATETIME DEFAULT '0000-00-00 00:00:00' NOT NULL,
+            PRIMARY KEY  (prompt_hash)
+        ) $charset_collate;";
+        dbDelta( $sql_api_cache );
     }
 
     public static function add_default_agents() {

@@ -1,5 +1,7 @@
 <?php
 
+require_once IACP_PLUGIN_DIR . 'includes/class-iacp-api-cache.php';
+
 class IACP_Gemini_Client {
 
     private const API_BASE_URL = 'https://generativelanguage.googleapis.com/v1beta/models/';
@@ -19,6 +21,11 @@ class IACP_Gemini_Client {
     }
 
     public static function generate_text( $prompt ) {
+        $cached_response = IACP_Api_Cache::get( $prompt );
+        if ( $cached_response ) {
+            return $cached_response;
+        }
+
         if ( get_transient( self::CIRCUIT_BREAKER_TRANSIENT ) ) {
             return new WP_Error( 'circuit_breaker', 'La API de Gemini no está disponible temporalmente debido a fallos repetidos. Por favor, inténtalo de nuevo en unos minutos.' );
         }
@@ -87,7 +94,11 @@ class IACP_Gemini_Client {
             return new WP_Error( 'empty_or_invalid_response', 'La API de Gemini devolvió una respuesta vacía o inválida. Intenta con un prompt diferente o revisa los logs.' );
         }
 
-        return $response_data['candidates'][0]['content']['parts'][0]['text'];
+        $generated_text = $response_data['candidates'][0]['content']['parts'][0]['text'];
+
+        IACP_Api_Cache::set( $prompt, $generated_text );
+
+        return $generated_text;
     }
 
     private static function record_failure() {
